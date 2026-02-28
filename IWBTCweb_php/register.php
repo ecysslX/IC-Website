@@ -1,6 +1,5 @@
-<?php include 'sidebar.php'; ?>
+﻿<?php include 'sidebar.php'; ?>
 
-<!-- 注册页面 -->
 <div class="tabcontent" id="register">
     <div class="login_content">
         <h1>用户注册</h1>

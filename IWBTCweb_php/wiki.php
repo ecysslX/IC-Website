@@ -1,6 +1,5 @@
-<?php include 'sidebar.php'; ?>
+﻿<?php include 'sidebar.php'; ?>
 
-<!-- 百科 -->
 <div class="tabcontent" id="wiki">
     <div class="wiki_content">
         <h1>百科</h1>

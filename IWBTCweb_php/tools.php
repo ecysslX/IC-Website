@@ -1,4 +1,4 @@
-<?php include 'sidebar.php'; ?>
+﻿<?php include 'sidebar.php'; ?>
 
 <!-- 工具 -->
 <div class="tabcontent" id="tools">

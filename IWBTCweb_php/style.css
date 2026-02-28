@@ -1,107 +1,195 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=swap');
 
-/* 所有元素的默认样式 */
+:root {
+    --bg-main: #121212;
+    --bg-soft: #171717;
+    --panel: rgba(32, 32, 32, 0.9);
+    --panel-2: rgba(24, 24, 24, 0.94);
+    --line: rgba(158, 158, 158, 0.26);
+    --line-soft: rgba(158, 158, 158, 0.14);
+    --text-main: #e3e3e3;
+    --text-dim: #c1c1c1;
+    --text-muted: #a0a0a0;
+    --accent: #c8c8c8;
+    --accent-hover: #e2e2e2;
+    --danger: #a66f63;
+    --shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+    --radius-lg: 14px;
+    --radius-md: 10px;
+}
+
 * {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    font-family: 'Noto Serif SC', serif;
+    color: var(--text-main);
+    background: var(--bg-main);
+    line-height: 1.7;
+    letter-spacing: 0.01em;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    color: var(--accent);
+    letter-spacing: 0.03em;
+}
+
+a {
+    color: var(--accent);
+    text-decoration-color: rgba(182, 182, 182, 0.45);
+}
+
+a:hover {
+    color: var(--accent-hover);
 }
 
 #header_link {
-    height: 50px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
     width: 100%;
-    background-color: #333;
-}
-
-#login_img {
-    height: 100%;
-    width: auto;
-    max-height: 50px;
-    max-width: 50px;
-}
-
-#login_img:hover {
-    cursor: pointer;
+    border-bottom: 1px solid var(--line);
+    background: rgba(20, 20, 20, 0.9);
+    backdrop-filter: blur(4px);
 }
 
 nav {
-    height: 50px;
-    display: flex;                /* 确保内部元素对齐 */
-    align-items: center;         /* 垂直居中 */
-    padding: 0;                  /* 移除内边距 */
-    margin: 0;                   /* 移除非必要的外边距 */
-    box-sizing: border-box;      /* 包含 padding 和 border */
-}
-
-.tabdiv {
-    display: inline-block;
-    width: 80px;
-    height: 50px;
-    text-align: center;
+    max-width: 1200px;
+    min-height: 60px;
+    margin: 0 auto;
+    display: flex;
     align-items: center;
-    color: #ffffff;
-
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 16px;
     position: relative;
 }
 
-.tabdiv a {
-    display: block;
-    width: 100%;
-    height: 100%;
-    text-decoration: none;
-    color: inherit;
-    position: absolute;
-    top: 0;
-    left: 0;
+.nav-left {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
 }
 
-.tabdiv h4 {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    margin: 0;
+.nav-tabs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
-.tabdiv:hover {
-    background-color: #555;
+.nav-toggle {
+    display: none;
+    min-width: 64px;
+    height: 34px;
+    border-radius: 8px;
+    border: 1px solid var(--line-soft);
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-main);
+    font-size: 13px;
     cursor: pointer;
 }
 
+.login_icon {
+    margin-right: 0;
+    display: flex;
+    align-items: center;
+}
+
+.user-welcome {
+    color: var(--text-dim);
+    font-size: 14px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--line-soft);
+    background: rgba(0, 0, 0, 0.18);
+    white-space: nowrap;
+}
+
+#login_img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--line-soft);
+    transition: transform 0.2s ease;
+}
+
+#login_img:hover {
+    transform: translateY(-1px);
+    cursor: pointer;
+}
+
+.tabdiv {
+    min-width: 82px;
+    height: 38px;
+    border-radius: 8px;
+    color: var(--text-dim);
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.tabdiv a {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+
 .tabdiv h4 {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    font-size: 14px;
+    font-weight: 500;
+    color: inherit;
+}
+
+.tabdiv:hover {
+    color: var(--text-main);
+    border-color: var(--line-soft);
+    background: rgba(182, 182, 182, 0.08);
 }
 
 .active {
-    background-color: #3a60b4;
+    color: var(--text-main);
+    border-color: var(--line);
+    background: rgba(182, 182, 182, 0.12);
 }
 
-
-
-/* 主体 */
 #main_content {
-    min-height: calc(100vh - 550px);
-    padding: 20px;
+    max-width: 1200px;
+    min-height: calc(100vh - 320px);
+    margin: 0 auto;
+    padding: 28px 18px 42px;
 }
 
-/* 轮播图 */
 .slider-container {
     position: relative;
     width: 100%;
-    height: calc(30vw);
+    height: clamp(300px, 52vw, 560px);
     overflow: hidden;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--line-soft);
+    box-shadow: var(--shadow);
+    background: #0f0f0f;
 }
 
 .slider {
     display: flex;
     width: 100%;
     height: 100%;
-    transition: transform 0.5s ease;
+    transition: transform 0.45s ease;
 }
 
 .slide {
@@ -111,89 +199,134 @@ nav {
 
 .slide img {
     width: 100%;
-    object-fit: cover
+    height: 100%;
+    object-fit: contain;
+    filter: saturate(0.9);
 }
 
-.indicators {
+.slide-caption {
     position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 10px;
+    left: 16px;
+    bottom: 16px;
+    z-index: 2;
+    max-width: calc(100% - 360px);
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--line-soft);
+    background: rgba(18, 18, 18, 0.72);
+    color: var(--text-main);
+    font-size: 14px;
+    line-height: 1.4;
 }
 
-.indicator {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.5);
-    cursor: pointer;
-    transition: background-color 0.3s;
-    /* 描边 */
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
-}
-
-.indicator.active {
-    background-color: #fff;
-}
-
-
-
-/* 工具 */
-#tools_content_1:hover {
-    /* 鼠标设定为手型 */
-    cursor: pointer;
-}
-
-.tool-link {
-    display: inline-block;
-    padding: 10px 20px;
+.slider-thumbs {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    z-index: 3;
+    display: grid;
+    grid-template-columns: repeat(4, 72px);
+    gap: 8px;
+    padding: 8px;
     border-radius: 10px;
-    background-color: #3a60b4;
-    color: #fff;
-    text-decoration: none;
-    transition: background-color 0.3s;
-    margin: 10px 0;
+    border: 1px solid var(--line-soft);
+    background: rgba(18, 18, 18, 0.72);
 }
 
-.tool-link:hover {
-    background-color: #555;
+.slider-thumb {
+    display: block;
+    width: 72px;
+    height: 44px;
+    border-radius: 8px;
+    border: 1px solid var(--line-soft);
+    background: transparent;
+    overflow: hidden;
+    cursor: pointer;
+    opacity: 0.72;
+    transition: opacity 0.2s ease, border-color 0.2s ease;
 }
 
+.slider-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
+.slider-thumb:hover {
+    opacity: 0.9;
+}
 
-/* 社区 */
+.slider-thumb.active {
+    opacity: 1;
+    border-color: var(--line);
+}
+
+.tools_content,
+.wiki_content,
+.community_content,
+.download_content,
+.login_content {
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-lg);
+    background: var(--panel);
+    box-shadow: var(--shadow);
+}
+
+/* 工具页降噪：去掉多余外层框，只保留一层信息卡 */
+#tools .tools_content {
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+#tools .community_content {
+    margin-top: 0;
+}
+
+#tools .community_card1 {
+    border: none;
+}
+
+.wiki_content,
+.download_content,
+.login_content {
+    padding: 24px;
+}
+
+.wiki_content h1,
+.download_content h1,
+.login_content h1 {
+    margin-bottom: 12px;
+}
+
+.wiki_content p,
+.download_content p,
+.community_card2 p,
+.form-group,
+.info-item {
+    color: var(--text-dim);
+}
 
 .community_content {
     display: flex;
-    /* 圆角 */
-    border-radius: 25px;
-    /* 外边距 */
-    margin: 30px auto 30px auto;
-    padding: calc(2vw + 5px);
-    height: calc(100vw * 0.3 + 50px);
-    width: 80%;
-    /* 描边 */
-    box-shadow: 2px 8px 16px rgba(0, 0, 0, 0.1);
-    background-color: #ebebeb;
-    /* 溢出内容使用滚动条 */
-    overflow-y: auto;
-    /* 内部文字描边 */
-    text-shadow: 1px 1px 12px rgb(255, 255, 255);
-    transition: transform 0.5s ease-in-out;
+    gap: 16px;
+    width: min(980px, 100%);
+    margin: 16px auto;
+    padding: 16px;
+    transition: transform 0.2s ease;
 }
 
 .community_content:hover {
-    box-shadow: 6px 12px 20px rgba(0, 0, 0, 0.4);
-    /* 放大动画,过渡效果时间为0.5秒 */
-    transform: scale(1.05);
+    transform: translateY(-2px);
 }
 
 .community_card1 {
-    height: 100%;
-    aspect-ratio: 1/1;
-    margin-right: 10px;
+    width: clamp(120px, 20vw, 220px);
+    flex: 0 0 auto;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--line-soft);
 }
 
 .community_card1 img {
@@ -202,298 +335,325 @@ nav {
     object-fit: cover;
 }
 
+.community_card1_link {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.community_card1_link img {
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.community_card1_link:hover img {
+    transform: scale(1.03);
+    opacity: 0.92;
+}
+
 .community_card2 {
     flex: 1;
 }
 
 .community_card2 h1 {
-    text-align: center;
+    margin-bottom: 10px;
+    font-size: clamp(18px, 2.4vw, 24px);
 }
 
-
-
-/* 下载 */
-.download_content {
-    width: 80%;
-    margin: 30px auto 30px auto;
-    padding: 20px;
-    border-radius: 25px;
-    box-shadow: 2px 8px 16px rgba(0, 0, 0, 0.1);
-    background-color: #ebebeb;
-    text-align: center;
-    transition: transform 0.5s ease-in-out;
+.tool-link,
+.download_content a,
+.form-group input[type="submit"],
+.logout-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 9px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    border: 1px solid var(--line);
+    background: rgba(182, 182, 182, 0.16);
+    color: var(--text-main);
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
 }
 
-.download_content:hover {
-    box-shadow: 6px 12px 20px rgba(0, 0, 0, 0.4);
-    transform: scale(1.05);
+.copy-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    padding: 4px 10px;
+    min-height: 30px;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: rgba(182, 182, 182, 0.12);
+    color: var(--text-main);
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.2s ease;
 }
 
-.download_content h1 {
-    margin-bottom: 20px;
+.copy-btn:hover {
+    background: rgba(182, 182, 182, 0.2);
 }
 
-.download_content p {
-    margin-bottom: 20px;
+.tool-link:hover,
+.download_content a:hover,
+.form-group input[type="submit"]:hover,
+.logout-btn:hover {
+    background: rgba(182, 182, 182, 0.24);
+    transform: translateY(-1px);
+}
+
+.download_content h2 {
+    margin: 14px 0 10px;
+    font-size: 20px;
 }
 
 .download_content a {
-    display: inline-block;
-    padding: 10px 20px;
-    border-radius: 10px;
-    background-color: #3a60b4;
-    color: #fff;
-    text-decoration: none;
-    transition: background-color 0.3s;
-    margin: 10px;
+    margin: 7px;
 }
 
-.download_content a:hover {
-    background-color: #555;
+#tools_content_1:hover {
+    cursor: default;
 }
 
-
-
-
-/* 底部 */
-#footer {
-    height: 500px;
-    background-color: #333;
-    color: #a1a1a1;
-    text-align: center;
-    padding: 10px;
-}
-
-#footer a {
-    color: #fff;
-    text-decoration: none;
-}
-
-#footer a:hover {
-    text-decoration: underline;
-}
-
-
-
-/* 适配暗色 */
-@media (prefers-color-scheme: dark) {
-    body {
-        background-color: #333;
-        color: #fff;
-    }
-
-    #header_link {
-        background-color: #464646;
-    }
-
-    .tabdiv {
-        background-color: #464646;
-    }
-
-    .tabdiv:hover {
-        background-color: #555;
-    }
-
-    .active {
-        background-color: #3a60b4;
-    }
-
-    .slider-container {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
-
-    .indicator {
-        box-shadow: 0 0 4px rgba(255, 0.5);
-    }
-
-    .community_content {
-        background-color: #464646;
-        box-shadow: 2px 8px 16px rgba(0, 0, 0, 0.3);
-    }
-
-    .download_content {
-        background-color: #464646;
-        box-shadow: 2px 8px 16px rgba(0, 0, 0, 0.3);
-    }
-
-    #footer {
-        background-color: #252525;
-    }
-}
-
-/* 登录注册 */
 .login_content {
-    width: 400px;
-    margin: 50px auto;
-    padding: 30px;
-    border-radius: 25px;
-    box-shadow: 2px 8px 16px rgba(0, 0, 0, 0.3);
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    transition: transform 0.5s ease-in-out;
-}
-
-.login_content:hover {
-    box-shadow: 6px 12px 20px rgba(0, 0, 0, 0.4);
-    transform: scale(1.05);
-}
-
-.login_content h1 {
-    margin-bottom: 30px;
+    width: min(560px, 100%);
+    margin: 26px auto;
 }
 
 .form-group {
-    margin-bottom: 20px;
-    text-align: left;
+    margin-bottom: 14px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+    margin-bottom: 6px;
+    color: var(--text-main);
 }
 
 .form-group input[type="text"],
 .form-group input[type="email"],
 .form-group input[type="password"] {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #555;
-    border-radius: 5px;
-    font-size: 16px;
-    background-color: #444;
-    color: #fff;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--line-soft);
+    background: rgba(20, 20, 20, 0.62);
+    color: var(--text-main);
+    font-size: 15px;
 }
 
 .form-group input[type="text"]:focus,
 .form-group input[type="email"]:focus,
 .form-group input[type="password"]:focus {
     outline: none;
-    border-color: #3a60b4;
-    box-shadow: 0 0 0 2px rgba(58, 96, 180, 0.2);
+    border-color: var(--line);
 }
 
-.form-group input[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #3a60b4;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.form-group input[type="submit"]:hover {
-    background-color: #555;
-}
-
-.form-group p {
-    text-align: center;
-    margin-top: 10px;
-}
-
-.form-group a {
-    color: #3a60b4;
-    text-decoration: none;
-}
-
-.form-group a:hover {
-    text-decoration: underline;
-}
-
-/* 个人资料页面 */
 .profile-info {
-    margin-bottom: 30px;
-    text-align: left;
+    margin: 10px 0 16px;
 }
 
 .info-item {
-    margin-bottom: 15px;
-    padding: 10px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--line-soft);
+    background: rgba(0, 0, 0, 0.16);
 }
 
 .info-item .label {
-    font-weight: bold;
     display: inline-block;
-    width: 100px;
-}
-
-.info-item .value {
-    display: inline-block;
+    min-width: 110px;
+    color: var(--text-main);
 }
 
 .logout-btn {
-    display: block;
     width: 100%;
-    padding: 10px;
-    text-align: center;
-    border: none;
-    border-radius: 5px;
-    background-color: #e74c3c;
-    color: #fff;
+    background: rgba(185, 118, 103, 0.2);
+    border-color: rgba(185, 118, 103, 0.4);
+}
+
+#footer {
+    margin-top: 20px;
+    border-top: 1px solid var(--line-soft);
+    background: rgba(18, 18, 18, 0.92);
+    color: var(--text-muted);
+    padding: 24px 18px;
+}
+
+.footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-inner ul {
+    list-style: none;
+    display: grid;
+    gap: 8px;
+}
+
+.footer-inner a {
+    color: var(--text-dim);
     text-decoration: none;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    border-bottom: 1px dotted rgba(158, 158, 158, 0.35);
 }
 
-.logout-btn:hover {
-    background-color: #c0392b;
-    text-decoration: none;
+.footer-inner a:hover {
+    color: var(--accent-hover);
 }
 
-.login_icon {
-    margin-right: 20px;
+::-webkit-scrollbar {
+    width: 10px;
 }
 
-#login_img {
-    height: 100%;
-    width: auto;
-    max-height: 50px;
-    max-width: 50px;
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.25);
 }
 
-#login_img:hover {
-    cursor: pointer;
+::-webkit-scrollbar-thumb {
+    background: rgba(158, 158, 158, 0.35);
+    border-radius: 12px;
 }
 
-/* 响应式设计 */
-@media screen and (max-width: 768px) {
-    .community_content {
-        margin: 10px auto 10px auto;
-        height: 33vh;
+@media (max-width: 900px) {
+    nav {
+        min-height: 56px;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 12px;
+    }
+
+    .nav-left {
+        justify-content: flex-start;
+    }
+
+    .nav-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+    }
+
+    .nav-tabs {
+        display: none;
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 10px;
+        right: 10px;
+        z-index: 120;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid var(--line-soft);
+        background: rgba(22, 22, 22, 0.98);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    #header_link.nav-open .nav-tabs {
+        display: grid;
+    }
+
+    .tabdiv {
+        min-width: 0;
+        height: 36px;
+    }
+
+    #main_content {
+        padding: 16px 12px 28px;
+    }
+
+    .slider-container {
+        height: clamp(220px, 56vw, 360px);
+    }
+
+    .slider-thumbs {
+        grid-template-columns: repeat(4, 52px);
+        right: 12px;
+        bottom: 12px;
+        padding: 5px;
+        gap: 6px;
+    }
+
+    .slider-thumb {
+        width: 52px;
+        height: 34px;
     }
 
     .community_card1 {
-        display: none;
+        width: 96px;
     }
 
-    .login_content {
-        width: 90%;
-        margin: 30px auto;
-        padding: 20px;
-    }
-
-    .login_icon {
-        margin-right: 10px;
-    }
-
-    #login_img {
-        max-height: 40px;
-        max-width: 40px;
-    }
-    
     .info-item .label {
-        width: 80px;
-        font-size: 14px;
+        min-width: 86px;
     }
-    
-    .info-item .value {
-        font-size: 14px;
+}
+
+@media (max-width: 680px) {
+    #main_content {
+        padding: 12px 10px 22px;
+    }
+
+    .tabdiv {
+        min-width: 0;
+        height: 34px;
+    }
+
+    .tabdiv h4 {
+        font-size: 13px;
+    }
+
+    .slide-caption {
+        left: 10px;
+        bottom: 58px;
+        max-width: calc(100% - 20px);
+        font-size: 12px;
+        padding: 6px 9px;
+    }
+
+    .slider-thumbs {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        padding: 4px;
+        gap: 4px;
+    }
+
+    .slider-thumb {
+        width: 100%;
+        height: 34px;
+    }
+
+    .community_content {
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .community_card1 {
+        width: 100%;
+        height: 160px;
+    }
+
+    .download_content a {
+        width: 100%;
+        margin: 6px 0;
+    }
+
+    .wiki_content,
+    .download_content,
+    .login_content {
+        padding: 16px;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="password"],
+    .form-group input[type="submit"] {
+        min-height: 42px;
     }
 }

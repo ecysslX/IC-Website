@@ -1,6 +1,5 @@
-<?php include 'sidebar.php'; ?>
+﻿<?php include 'sidebar.php'; ?>
 
-<!-- 登录页面 -->
 <div class="tabcontent" id="login">
     <div class="login_content">
         <h1>用户登录</h1>

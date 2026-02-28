@@ -1,76 +1,103 @@
-<?php include 'sidebar.php'; ?>
+﻿<?php include 'sidebar.php'; ?>
 
-<!-- 首页 -->
 <div class="tabcontent" id="home">
-    <!-- 轮播图 -->
     <div class="slider-container">
         <div class="slider">
-            <div class="slide">
-                <img src="pic/library_hero2.png" alt="Slide 1">
+            <div class="slide" data-title="IWBTC 游戏网站">
+                <img src="pic/header.jpg" alt="IWBTC 游戏网站">
             </div>
-            <div class="slide">
-                <img src="pic/library_hero2.png" alt="Slide 2">
+            <div class="slide" data-title="关卡编辑与灵感收集">
+                <img src="pic/header.jpg" alt="关卡编辑与灵感收集">
             </div>
-            <div class="slide">
-                <img src="pic/library_hero2.png" alt="Slide 3">
+            <div class="slide" data-title="社区协作与玩法交流">
+                <img src="pic/header.jpg" alt="社区协作与玩法交流">
             </div>
-            <div class="slide">
-                <img src="pic/library_hero2.png" alt="Slide 4">
+            <div class="slide" data-title="下载版本并开始挑战">
+                <img src="pic/header.jpg" alt="下载版本并开始挑战">
             </div>
         </div>
-        <div class="indicators">
-            <div class="indicator active" onclick="goToSlide(0)"></div>
-            <div class="indicator" onclick="goToSlide(1)"></div>
-            <div class="indicator" onclick="goToSlide(2)"></div>
-            <div class="indicator" onclick="goToSlide(3)"></div>
-        </div>  
-    </div>
+        <div class="slide-caption" id="slideCaption"></div>
 
+        <div class="slider-thumbs" id="sliderThumbs">
+            <button type="button" class="slider-thumb active" data-index="0">
+                <img src="pic/header.jpg" alt="缩略图 1">
+            </button>
+            <button type="button" class="slider-thumb" data-index="1">
+                <img src="pic/header.jpg" alt="缩略图 2">
+            </button>
+            <button type="button" class="slider-thumb" data-index="2">
+                <img src="pic/header.jpg" alt="缩略图 3">
+            </button>
+            <button type="button" class="slider-thumb" data-index="3">
+                <img src="pic/header.jpg" alt="缩略图 4">
+            </button>
+        </div>
+    </div>
 </div>
 
 <script>
-//轮播图
+// 轮播图配置：只需要改这里的标题即可
+const slideTitles = [
+    'IWBTC 游戏网站',
+    '关卡编辑与灵感收集',
+    '社区协作与玩法交流',
+    '下载版本并开始挑战'
+];
+
 const slider = document.querySelector('.slider');
 const slides = document.querySelectorAll('.slide');
-const indicators = document.querySelectorAll('.indicator');
+const thumbs = document.querySelectorAll('.slider-thumb');
+const thumbsContainer = document.getElementById('sliderThumbs');
+const caption = document.getElementById('slideCaption');
 const slideCount = slides.length;
 let currentIndex = 0;
 let timer = null;
-const interval = 5000; //5秒切换一次
+const interval = 5000;
 
-//自动轮播
+slides.forEach((slide, index) => {
+    slide.dataset.title = slideTitles[index] || `第 ${index + 1} 张`;
+});
+
 function startAutoPlay() {
+    stopAutoPlay();
     timer = setInterval(() => {
         goToSlide((currentIndex + 1) % slideCount);
     }, interval);
 }
 
-//停止自动轮播
 function stopAutoPlay() {
-    clearInterval(timer);
+    if (timer) {
+        clearInterval(timer);
+        timer = null;
+    }
 }
 
-//切换到指定幻灯片
 function goToSlide(index) {
     currentIndex = index;
     const offset = -currentIndex * 100;
     slider.style.transform = `translateX(${offset}%)`;
 
-    //更新指示器状态
-    indicators.forEach((indicator, i) => {
-        if (i === currentIndex) {
-            indicator.classList.add('active');
-        } else {
-            indicator.classList.remove('active');
-        }
+    thumbs.forEach((thumb, i) => {
+        thumb.classList.toggle('active', i === currentIndex);
     });
+
+    caption.textContent = slides[currentIndex].dataset.title;
 }
 
-//鼠标悬停时暂停轮播
+thumbs.forEach((thumb) => {
+    thumb.addEventListener('click', () => {
+        const index = Number(thumb.dataset.index);
+        goToSlide(index);
+        startAutoPlay();
+    });
+});
+
 slider.addEventListener('mouseenter', stopAutoPlay);
 slider.addEventListener('mouseleave', startAutoPlay);
+thumbsContainer.addEventListener('mouseenter', stopAutoPlay);
+thumbsContainer.addEventListener('mouseleave', startAutoPlay);
 
-//启动自动轮播
+goToSlide(0);
 startAutoPlay();
 </script>
 
