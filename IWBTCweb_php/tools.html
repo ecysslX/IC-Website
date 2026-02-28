@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>碰撞点编辑器</title>
+        <link rel="icon" type="image/x-icon" href="pic/icon.ico">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: Arial, sans-serif;
+            }
+
+            #container {
+                display: flex;
+                height: 100vh;
+            }
+
+            #left {
+                height: 49vw;
+                aspect-ratio: 1/1;
+                background-color: #bbbbbb;
+                position: relative;
+                cursor: crosshair;
+            }
+
+            #right {
+                display: flex;
+                height: 49vw;
+                flex: 1;
+            }
+
+            #r1 {
+                width: 50%;
+                height: 100%;
+                overflow-y: auto;
+                background-color: #f0f0f0;
+            }
+
+            #add {
+                height: 70px;
+                width: 98%;
+                border: 1px solid #f5ff6a;
+                background-color: #d8d8d8;
+                text-align: center;
+                margin: 0 auto;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 45px;
+                cursor: pointer;
+                transition: 0.3s;
+            }
+
+            #add:hover {
+                background-color: #e0e0e0;
+                color: aqua;
+            }
+
+            .inputDiv {
+                display: flex;
+                justify-content: space-between;
+                height: 70px;
+                width: 98%;
+                margin: 0 auto;
+                border: 1px solid #292929;
+                background-color: #d8d8d8;
+                margin-bottom: 5px;
+            }
+
+            .inputDiv input {
+                height: 100%;
+                width: 40%;
+                border: none;
+                text-align: center;
+                font-size: 16px;
+            }
+
+            .inputDiv div {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: #ff6a6a;
+                cursor: pointer;
+                font-weight: bold;
+                color: white;
+            }
+
+            .inputDiv div:hover {
+                background-color: #ff4f4f;
+            }
+
+            #r2 {
+                flex: 1;
+                background-color: #b2daca;
+                padding: 10px;
+                display: flex;
+                flex-direction: column;
+            }
+
+            #output-area {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            #output {
+                flex: 1;
+                width: 100%;
+                resize: none;
+                font-family: monospace;
+                font-size: 14px;
+                padding: 10px;
+                border: 1px solid #ccc;
+                background-color: #f8f8f8;
+            }
+
+            .generate-btn {
+                height: 50px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                cursor: pointer;
+                font-size: 16px;
+                border-radius: 5px;
+            }
+
+            .generate-btn:hover {
+                background-color: #45a049;
+            }
+
+            .point {
+                position: absolute;
+                width: 10px;
+                height: 10px;
+                background-color: #ff6a6a;
+                border-radius: 50%;
+                transform: translate(-50%, -50%);
+                cursor: move;
+                z-index: 10;
+                transition: background-color 0.3s;
+            }
+
+            .point:hover {
+                background-color: #ff4f4f;
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+
+            .point.selected {
+                background-color: #4CAF50;
+                box-shadow: 0 0 0 2px white;
+            }
+
+            #canvas {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+            }
+
+            /* 响应式布局 */
+            @media screen and (max-width: 768px) {
+                #container {
+                    flex-direction: column;
+                }
+
+                #left {
+                    width: 100%;
+                    height: 100vw;
+                    background-color: #bbbbbb;
+                }
+
+                #right {
+                    flex: 1 1 0;
+                    flex-direction: column;
+                }
+
+                #r1,
+                #r2 {
+                    width: 100%;
+                    height: 50vh;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="container">
+            <div id="left">
+                <canvas id="canvas"></canvas>
+            </div>
+            <div id="right">
+                <div id="r1">
+                    <div id="add">+</div>
+                </div>
+                <div id="r2">
+                    <div id="output-area">
+                        <textarea id="output" placeholder="点击生成按钮获取坐标数组..." readonly></textarea>
+                        <button id="generate-btn" class="generate-btn">生成坐标数组</button>
+                        <input type="file" id="bg-upload" accept="image/*" style="display: none;">
+                        <button id="change-bg-btn" class="generate-btn">更换背景图</button>
+                        <button id="clear-bg-btn" class="generate-btn">清除背景图</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // 全局变量
+            const left = document.getElementById('left');
+            const r1 = document.getElementById('r1');
+            const r2 = document.getElementById('r2');
+            const add = document.getElementById('add');
+            const output = document.getElementById('output');
+            const generateBtn = document.getElementById('generate-btn');
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+
+            let points = [];
+            let selectedPoint = null;
+            let dragging = false;
+            let dragOffset = { x: 0, y: 0 };
+
+            // 初始化
+            function init() {
+                resizeCanvas();
+                window.addEventListener('resize', resizeCanvas);
+
+                // 事件监听
+                left.addEventListener('mousedown', handleMouseDown);
+                left.addEventListener('mousemove', handleMouseMove);
+                left.addEventListener('mouseup', handleMouseUp);
+                add.addEventListener('click', ()=> addPoint(0,0));
+                generateBtn.addEventListener('click', generateOutput);
+                document.getElementById('clear-bg-btn').addEventListener('click', () => {
+                    left.style.backgroundImage = '';
+                    left.style.backgroundColor = '#554848';
+                    left.style.backgroundSize = '';
+                    left.style.backgroundPosition = '';
+                    left.style.backgroundRepeat = '';
+                });
+
+                const changeBgBtn = document.getElementById('change-bg-btn');
+                const bgUpload = document.getElementById('bg-upload');
+
+                changeBgBtn.addEventListener('click', () => {
+                    bgUpload.click(); // 触发文件选择
+                });
+
+                bgUpload.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        left.style.backgroundImage = `url(${event.target.result})`;
+                        left.style.backgroundSize = '100% 100%';
+                        // left.style.backgroundPosition = 'center';
+                        left.style.backgroundRepeat = 'no-repeat';
+                    };
+                    reader.readAsDataURL(file);
+
+                    bgUpload.value = ''; // 关键：清空文件选择器
+                });
+            }
+
+            // 调整画布大小
+            function resizeCanvas() {
+                canvas.width = left.clientWidth;
+                canvas.height = left.clientHeight;
+                draw();
+            }
+
+            // 坐标转换函数
+            function screenToCanvas(x, y) {
+                const rect = left.getBoundingClientRect();
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const canvasX = ((x - rect.left - centerX) / centerX) * 0.32;
+                const canvasY = ((centerY - (y - rect.top)) / centerY) * 0.32;
+
+                return {
+                    x: Math.max(-0.32, Math.min(0.32, canvasX)),
+                    y: Math.max(-0.32, Math.min(0.32, canvasY))
+                };
+            }
+
+            function canvasToScreen(x, y) {
+                const rect = left.getBoundingClientRect();
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                return {
+                    x: centerX + (x / 0.32) * centerX,
+                    y: centerY - (y / 0.32) * centerY
+                };
+            }
+
+            // 添加点
+            function addPoint(x = 0, y = 0) {
+                if (typeof x === 'object' && x.clientX !== undefined) {
+                    // 来自点击事件
+                    const pos = screenToCanvas(x.clientX, x.clientY);
+                    x = pos.x;
+                    y = pos.y;
+                }
+
+                const index = points.length;
+                points.push({ x, y });
+
+                // 创建输入控件
+                createInputControl(index, x, y);
+
+                draw();
+            }
+
+            // 创建输入控件
+            function createInputControl(index, x, y) {
+                const inputDiv = document.createElement('div');
+                inputDiv.className = 'inputDiv';
+                inputDiv.dataset.index = index;
+
+                const inputX = document.createElement('input');
+                inputX.type = 'number';
+                inputX.step = '0.01';
+                inputX.min = '-0.32';
+                inputX.max = '0.32';
+                inputX.value = x.toFixed(3);
+                inputX.addEventListener('input', (e) => {
+                    points[index].x = Math.max(-0.32, Math.min(0.32, parseFloat(e.target.value) || 0));
+                    draw();
+                });
+
+                const inputY = document.createElement('input');
+                inputY.type = 'number';
+                inputY.step = '0.01';
+                inputY.min = '-0.32';
+                inputY.max = '0.32';
+                inputY.value = y.toFixed(3);
+                inputY.addEventListener('input', (e) => {
+                    points[index].y = Math.max(-0.32, Math.min(0.32, parseFloat(e.target.value) || 0));
+                    draw();
+                });
+
+                const delBtn = document.createElement('div');
+                delBtn.textContent = `${index + 1}`;
+                delBtn.title = '删除该点';
+                delBtn.style.fontWeight = 'bold';
+                delBtn.style.fontSize = '20px';
+                delBtn.style.color = 'white';
+                delBtn.addEventListener('click', () => {
+                    // 找到当前 div 在整个列表中的实时索引
+                    const inputDivs = Array.from(r1.querySelectorAll('.inputDiv'));
+                    const currentIndex = inputDivs.indexOf(inputDiv);
+
+                    if (currentIndex !== -1) {
+                        points.splice(currentIndex, 1); // 删除对应数据
+                        inputDiv.remove();              // 删除 DOM
+                        updateIndices();                // 重新编号并重绘
+                    }
+                });
+
+                inputDiv.appendChild(inputX);
+                inputDiv.appendChild(inputY);
+                inputDiv.appendChild(delBtn);
+
+                add.parentNode.insertBefore(inputDiv, add);
+            }
+
+            // 更新索引
+            function updateIndices() {
+                const inputDivs = r1.querySelectorAll('.inputDiv');
+                inputDivs.forEach((div, index) => {
+                    div.dataset.index = index;
+                    const inputs = div.querySelectorAll('input');
+                    inputs[0].value = points[index].x.toFixed(3);
+                    inputs[1].value = points[index].y.toFixed(3);
+                });
+            }
+
+            // 绘制点和线
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // 绘制坐标轴
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+
+                ctx.strokeStyle = '#888';
+                ctx.lineWidth = 1;
+
+                // X轴
+                ctx.beginPath();
+                ctx.moveTo(0, centerY);
+                ctx.lineTo(canvas.width, centerY);
+                ctx.stroke();
+
+                // Y轴
+                ctx.beginPath();
+                ctx.moveTo(centerX, 0);
+                ctx.lineTo(centerX, canvas.height);
+                ctx.stroke();
+
+                // 绘制网格
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 0.5;
+                const gridSize = 0.08 * (canvas.width / 2) / 0.32;
+
+                for (let i = -4; i <= 4; i++) {
+                    if (i !== 0) {
+                        // 垂直线
+                        ctx.beginPath();
+                        ctx.moveTo(centerX + i * gridSize, 0);
+                        ctx.lineTo(centerX + i * gridSize, canvas.height);
+                        ctx.stroke();
+
+                        // 水平线
+                        ctx.beginPath();
+                        ctx.moveTo(0, centerY + i * gridSize);
+                        ctx.lineTo(canvas.width, centerY + i * gridSize);
+                        ctx.stroke();
+                    }
+                }
+
+                // 绘制连接线
+                if (points.length > 1) {
+                    ctx.strokeStyle = '#00ff00';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+
+                    points.forEach((point, index) => {
+                        const pos = canvasToScreen(point.x, point.y);
+                        if (index === 0) {
+                            ctx.moveTo(pos.x, pos.y);
+                        } else {
+                            ctx.lineTo(pos.x, pos.y);
+                        }
+                    });
+
+                    // 闭合图形
+                    const firstPos = canvasToScreen(points[0].x, points[0].y);
+                    ctx.lineTo(firstPos.x, firstPos.y);
+                    ctx.stroke();
+                }
+
+                // 绘制点
+                points.forEach((point, index) => {
+                    const pos = canvasToScreen(point.x, point.y);
+
+                    ctx.fillStyle = selectedPoint === index ? '#4CAF50' : '#ff6a6a';
+                    ctx.beginPath();
+                    ctx.arc(pos.x, pos.y, 5, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // 绘制索引
+                    ctx.fillStyle = 'white';
+                    ctx.font = '12px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(index + 1, pos.x, pos.y - 10);
+                });
+            }
+
+            // 鼠标事件处理
+            function handleMouseDown(e) {
+                const pos = screenToCanvas(e.clientX, e.clientY);
+
+                // 检查是否点击了现有点
+                let clickedPoint = null;
+                points.forEach((point, index) => {
+                    const distance = Math.sqrt(
+                        Math.pow(point.x - pos.x, 2) + Math.pow(point.y - pos.y, 2)
+                    );
+                    if (distance < 0.005) {
+                        clickedPoint = index;
+                    }
+                });
+
+                if (clickedPoint !== null) {
+                    selectedPoint = clickedPoint;
+                    dragging = true;
+                    const pointPos = canvasToScreen(points[selectedPoint].x, points[selectedPoint].y);
+                    dragOffset = {
+                        x: e.clientX - pointPos.x,
+                        y: e.clientY - pointPos.y
+                    };
+                } else {
+                    // 空白处点击，添加新点
+                    addPoint(e);
+                }
+
+                draw();
+            }
+
+            function handleMouseMove(e) {
+                if (dragging && selectedPoint !== null) {
+                    const newPos = screenToCanvas(
+                        e.clientX - dragOffset.x,
+                        e.clientY - dragOffset.y
+                    );
+                    points[selectedPoint].x = newPos.x;
+                    points[selectedPoint].y = newPos.y;
+
+                    // 更新输入框
+                    const inputDiv = r1.querySelectorAll('.inputDiv')[selectedPoint];
+                    if (inputDiv) {
+                        const inputs = inputDiv.querySelectorAll('input');
+                        inputs[0].value = newPos.x.toFixed(3);
+                        inputs[1].value = newPos.y.toFixed(3);
+                    }
+
+                    draw();
+                }
+            }
+
+            function handleMouseUp() {
+                dragging = false;
+                draw();
+            }
+
+            function updateIndices() {
+                    const inputDivs = r1.querySelectorAll('.inputDiv');
+                    inputDivs.forEach((div, i) => {
+                        div.querySelector('div').textContent = i + 1;
+                    });
+                    draw();
+                }
+
+            // 生成输出
+            function generateOutput() {
+                    if (points.length === 0) {
+                        output.value = '[]';
+                        return;
+                    }
+
+                    const arr = points.map(p => ({
+                        x: parseFloat(p.x.toFixed(3)),
+                        y: parseFloat(p.y.toFixed(3)),
+                        z: 0.000
+                    }));
+
+                    output.value = JSON.stringify(arr, null, 2);
+                    output.select();
+                }
+
+            // 初始化
+            init();
+        </script>
+    </body>
+
+</html>

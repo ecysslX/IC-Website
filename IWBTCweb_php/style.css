@@ -1,0 +1,499 @@
+
+/* 所有元素的默认样式 */
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+#header_link {
+    height: 50px;
+    width: 100%;
+    background-color: #333;
+}
+
+#login_img {
+    height: 100%;
+    width: auto;
+    max-height: 50px;
+    max-width: 50px;
+}
+
+#login_img:hover {
+    cursor: pointer;
+}
+
+nav {
+    height: 50px;
+    display: flex;                /* 确保内部元素对齐 */
+    align-items: center;         /* 垂直居中 */
+    padding: 0;                  /* 移除内边距 */
+    margin: 0;                   /* 移除非必要的外边距 */
+    box-sizing: border-box;      /* 包含 padding 和 border */
+}
+
+.tabdiv {
+    display: inline-block;
+    width: 80px;
+    height: 50px;
+    text-align: center;
+    align-items: center;
+    color: #ffffff;
+
+    position: relative;
+}
+
+.tabdiv a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.tabdiv h4 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+}
+
+.tabdiv:hover {
+    background-color: #555;
+    cursor: pointer;
+}
+
+.tabdiv h4 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.active {
+    background-color: #3a60b4;
+}
+
+
+
+/* 主体 */
+#main_content {
+    min-height: calc(100vh - 550px);
+    padding: 20px;
+}
+
+/* 轮播图 */
+.slider-container {
+    position: relative;
+    width: 100%;
+    height: calc(30vw);
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.slider {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease;
+}
+
+.slide {
+    min-width: 100%;
+    height: 100%;
+}
+
+.slide img {
+    width: 100%;
+    object-fit: cover
+}
+
+.indicators {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+}
+
+.indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: background-color 0.3s;
+    /* 描边 */
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+.indicator.active {
+    background-color: #fff;
+}
+
+
+
+/* 工具 */
+#tools_content_1:hover {
+    /* 鼠标设定为手型 */
+    cursor: pointer;
+}
+
+.tool-link {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background-color: #3a60b4;
+    color: #fff;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    margin: 10px 0;
+}
+
+.tool-link:hover {
+    background-color: #555;
+}
+
+
+
+/* 社区 */
+
+.community_content {
+    display: flex;
+    /* 圆角 */
+    border-radius: 25px;
+    /* 外边距 */
+    margin: 30px auto 30px auto;
+    padding: calc(2vw + 5px);
+    height: calc(100vw * 0.3 + 50px);
+    width: 80%;
+    /* 描边 */
+    box-shadow: 2px 8px 16px rgba(0, 0, 0, 0.1);
+    background-color: #ebebeb;
+    /* 溢出内容使用滚动条 */
+    overflow-y: auto;
+    /* 内部文字描边 */
+    text-shadow: 1px 1px 12px rgb(255, 255, 255);
+    transition: transform 0.5s ease-in-out;
+}
+
+.community_content:hover {
+    box-shadow: 6px 12px 20px rgba(0, 0, 0, 0.4);
+    /* 放大动画,过渡效果时间为0.5秒 */
+    transform: scale(1.05);
+}
+
+.community_card1 {
+    height: 100%;
+    aspect-ratio: 1/1;
+    margin-right: 10px;
+}
+
+.community_card1 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.community_card2 {
+    flex: 1;
+}
+
+.community_card2 h1 {
+    text-align: center;
+}
+
+
+
+/* 下载 */
+.download_content {
+    width: 80%;
+    margin: 30px auto 30px auto;
+    padding: 20px;
+    border-radius: 25px;
+    box-shadow: 2px 8px 16px rgba(0, 0, 0, 0.1);
+    background-color: #ebebeb;
+    text-align: center;
+    transition: transform 0.5s ease-in-out;
+}
+
+.download_content:hover {
+    box-shadow: 6px 12px 20px rgba(0, 0, 0, 0.4);
+    transform: scale(1.05);
+}
+
+.download_content h1 {
+    margin-bottom: 20px;
+}
+
+.download_content p {
+    margin-bottom: 20px;
+}
+
+.download_content a {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background-color: #3a60b4;
+    color: #fff;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    margin: 10px;
+}
+
+.download_content a:hover {
+    background-color: #555;
+}
+
+
+
+
+/* 底部 */
+#footer {
+    height: 500px;
+    background-color: #333;
+    color: #a1a1a1;
+    text-align: center;
+    padding: 10px;
+}
+
+#footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+#footer a:hover {
+    text-decoration: underline;
+}
+
+
+
+/* 适配暗色 */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #333;
+        color: #fff;
+    }
+
+    #header_link {
+        background-color: #464646;
+    }
+
+    .tabdiv {
+        background-color: #464646;
+    }
+
+    .tabdiv:hover {
+        background-color: #555;
+    }
+
+    .active {
+        background-color: #3a60b4;
+    }
+
+    .slider-container {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .indicator {
+        box-shadow: 0 0 4px rgba(255, 0.5);
+    }
+
+    .community_content {
+        background-color: #464646;
+        box-shadow: 2px 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .download_content {
+        background-color: #464646;
+        box-shadow: 2px 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    #footer {
+        background-color: #252525;
+    }
+}
+
+/* 登录注册 */
+.login_content {
+    width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    border-radius: 25px;
+    box-shadow: 2px 8px 16px rgba(0, 0, 0, 0.3);
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    transition: transform 0.5s ease-in-out;
+}
+
+.login_content:hover {
+    box-shadow: 6px 12px 20px rgba(0, 0, 0, 0.4);
+    transform: scale(1.05);
+}
+
+.login_content h1 {
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #444;
+    color: #fff;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
+.form-group input[type="password"]:focus {
+    outline: none;
+    border-color: #3a60b4;
+    box-shadow: 0 0 0 2px rgba(58, 96, 180, 0.2);
+}
+
+.form-group input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #3a60b4;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.form-group input[type="submit"]:hover {
+    background-color: #555;
+}
+
+.form-group p {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.form-group a {
+    color: #3a60b4;
+    text-decoration: none;
+}
+
+.form-group a:hover {
+    text-decoration: underline;
+}
+
+/* 个人资料页面 */
+.profile-info {
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.info-item {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+.info-item .label {
+    font-weight: bold;
+    display: inline-block;
+    width: 100px;
+}
+
+.info-item .value {
+    display: inline-block;
+}
+
+.logout-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    background-color: #e74c3c;
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: #c0392b;
+    text-decoration: none;
+}
+
+.login_icon {
+    margin-right: 20px;
+}
+
+#login_img {
+    height: 100%;
+    width: auto;
+    max-height: 50px;
+    max-width: 50px;
+}
+
+#login_img:hover {
+    cursor: pointer;
+}
+
+/* 响应式设计 */
+@media screen and (max-width: 768px) {
+    .community_content {
+        margin: 10px auto 10px auto;
+        height: 33vh;
+    }
+
+    .community_card1 {
+        display: none;
+    }
+
+    .login_content {
+        width: 90%;
+        margin: 30px auto;
+        padding: 20px;
+    }
+
+    .login_icon {
+        margin-right: 10px;
+    }
+
+    #login_img {
+        max-height: 40px;
+        max-width: 40px;
+    }
+    
+    .info-item .label {
+        width: 80px;
+        font-size: 14px;
+    }
+    
+    .info-item .value {
+        font-size: 14px;
+    }
+}

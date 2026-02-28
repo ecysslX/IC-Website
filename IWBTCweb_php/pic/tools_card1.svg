@@ -1,0 +1,12 @@
+<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+
+ <g>
+  <title>Layer 1</title>
+  <line style="--darkreader-inline-stroke: #8c8273;" stroke="#000" id="svg_4" y2="12.23451" x2="33.42858" y1="34.91354" x1="12.64935" stroke-width="2" fill="none"/>
+  <line style="--darkreader-inline-stroke: #8c8273;" transform="rotate(121 40.3659 30.1217)" stroke="#000" id="svg_5" y2="15.67511" x2="53.60227" y1="44.56829" x1="27.12946" stroke-width="2" fill="none"/>
+  <line style="--darkreader-inline-stroke: #8c8273;" transform="rotate(69 29.0672 42.3295)" stroke="#000" id="svg_6" y2="27.88291" x2="42.30357" y1="56.77609" x1="15.83076" stroke-width="2" fill="none"/>
+  <path style="--darkreader-inline-fill: #f8a03c; --darkreader-inline-stroke: #ffa246;" id="svg_3" d="m33.87013,11.15584l0.12987,0l0,0.12987l-0.12987,0l0,-0.12987z" stroke-width="5" stroke="#bf5f00" fill="#f7992e"/>
+  <rect style="--darkreader-inline-fill: #f8a03c; --darkreader-inline-stroke: #ffa246;" stroke="#bf5f00" stroke-width="5" id="svg_1" height="0.12987" width="0.12987" y="35.31169" x="11.66234" fill="#f7992e"/>
+  <rect style="--darkreader-inline-fill: #f8a03c; --darkreader-inline-stroke: #ffa246;" stroke="#bf5f00" stroke-width="5" id="svg_2" height="0.12987" width="0.12987" y="49.20779" x="45.94805" fill="#f7992e"/>
+ </g>
+</svg>
