@@ -1,96 +1,143 @@
 ﻿# IC-Website
 
-IWBTC 相关网站项目（PHP + MySQL）。
+IWBTC（I Wanna Be The Creator）相关社区站点，基于 **PHP + MySQL** 实现，提供首页展示、账号系统、社区群组导航、下载入口与工具页。
+
+## 功能特性
+
+- 首页轮播展示
+- 用户注册 / 登录 / 个人资料页
+- 社区群组信息聚合（支持头像直达入群）
+- 游戏下载入口（多平台）
+- 工具页面（碰撞点编辑器入口）
+- 响应式适配（移动端菜单与页面布局优化）
+
+## 技术栈
+
+- 后端：PHP（PDO）
+- 数据库：MySQL
+- 前端：HTML + CSS + 原生 JavaScript
 
 ## 项目结构
 
 ```text
 .
-├─ IWBTCweb_php/        # Web 根目录（主要代码）
-│  ├─ index.php         # 首页入口
-│  ├─ config.php        # 数据库配置
-│  └─ database.sql      # 数据库初始化脚本
+├─ IWBTCweb_php/
+│  ├─ index.php             # 首页（轮播）
+│  ├─ home.php              # 首页路由入口
+│  ├─ login.php             # 登录页
+│  ├─ register.php          # 注册页
+│  ├─ profile.php           # 个人资料页
+│  ├─ community.php         # 社区页
+│  ├─ download.php          # 下载页
+│  ├─ tools.php             # 工具入口页
+│  ├─ tools.html            # 工具实现页
+│  ├─ wiki.php              # 百科页
+│  ├─ sidebar.php           # 顶部导航
+│  ├─ footer.php            # 页脚
+│  ├─ style.css             # 全站样式
+│  ├─ config.php            # 数据库配置
+│  ├─ database.sql          # 数据库初始化脚本
+│  └─ pic/                  # 静态图片资源
 └─ README.md
 ```
 
 ## 环境要求
 
-- PHP 8.0+（需启用 `pdo_mysql` 扩展）
-- MySQL 8.0+（或兼容版本）
-- Windows / macOS / Linux 均可
+- PHP 8.0+（需启用 `pdo_mysql`）
+- MySQL 8.0+（5.7 也可运行，但建议 8.0）
+- Windows / macOS / Linux
 
-## 本地启动（推荐：PHP 内置服务器）
+## 快速开始
 
-1. 进入项目目录：
+### 1) 克隆仓库
 
-```powershell
-cd IWBTCweb_php
+```bash
+git clone https://github.com/ecysslX/IC-Website.git
+cd IC-Website
 ```
 
-2. 建议先创建项目专用数据库账号（避免使用 root）：
+### 2) 初始化数据库
+
+在 MySQL 中执行：
 
 ```sql
 CREATE DATABASE IF NOT EXISTS `iwbtc` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER IF NOT EXISTS 'iwbtc_app'@'localhost' IDENTIFIED BY 'iwbtc_app_2026';
-GRANT ALL PRIVILEGES ON `iwbtc`.* TO 'iwbtc_app'@'localhost';
-FLUSH PRIVILEGES;
 ```
 
-3. 导入表结构：
+导入初始化脚本：
 
 ```sql
--- 在 MySQL 中执行
-source database.sql;
+-- 在仓库根目录执行 mysql 客户端后运行
+SOURCE IWBTCweb_php/database.sql;
 ```
 
-4. 检查数据库配置是否与本机一致（文件：`IWBTCweb_php/config.php`）：
+### 3) 配置数据库连接
 
-- `DB_HOST`：`localhost`
-- `DB_PORT`：`3316`
-- `DB_NAME`：`iwbtc`
-- `DB_USER`：`iwbtc_app`
-- `DB_PASS`：`iwbtc_app_2026`
+编辑 `IWBTCweb_php/config.php`：
 
-如果你的 MySQL 端口或密码不同，请先修改这些值。
+- `DB_HOST`
+- `DB_PORT`
+- `DB_NAME`
+- `DB_USER`
+- `DB_PASS`
 
-5. 启动 PHP 开发服务器：
+请改为你本机实际配置。
 
-```powershell
+### 4) 启动开发服务器
+
+```bash
+cd IWBTCweb_php
 php -S 127.0.0.1:8080
 ```
 
-6. 浏览器访问：
+访问：
 
 ```text
-http://127.0.0.1:8080/index.php
+http://127.0.0.1:8080/home.php
 ```
 
-## 本地启动（可选：XAMPP/WAMP）
+> 如果需要局域网访问，可改为：`php -S 0.0.0.0:8080`
 
-1. 将 `IWBTCweb_php` 放到站点目录（如 `htdocs`）。
-2. 启动 Apache 与 MySQL。
-3. 在 phpMyAdmin 导入 `database.sql`。
-4. 保持 `config.php` 与实际 MySQL 配置一致。
-5. 访问 `http://localhost/IWBTCweb_php/index.php`。
+## 默认账号说明
 
-## 默认测试账号
+`database.sql` 会写入示例账号（如未删改初始化数据）：
 
-`database.sql` 中包含示例账号（如未删除初始化数据）：
+- `admin`
+- `user`
 
-- 管理员：`admin`
-- 普通用户：`user`
+密码请以你当前数据库中的哈希或重置结果为准（仓库不保证固定明文密码）。
 
 ## 常见问题
 
-- 页面出现数据库连接失败：
-  - 检查 MySQL 是否启动。
-  - 检查 `config.php` 中端口、账号、密码是否正确。
-- 报错 `could not find driver`：
-  - PHP 未启用 `pdo_mysql` 扩展，请在 `php.ini` 中开启后重启服务。
-- 中文显示异常/注释乱码：
-  - 这是历史文件编码问题，建议统一转换为 UTF-8（无 BOM）。
+### 数据库连接失败
 
-## 开发建议
+- 检查 MySQL 服务是否启动
+- 检查 `config.php` 端口/用户名/密码是否正确
+- 确认数据库 `iwbtc` 已创建并导入 `database.sql`
 
-- 不要在仓库中提交真实生产数据库密码。
-- 可以后续将 `config.php` 改为读取环境变量（`.env`）以提高安全性。
+### `could not find driver`
+
+PHP 未启用 `pdo_mysql` 扩展，请在 `php.ini` 开启并重启服务。
+
+## 开发与贡献
+
+欢迎提交 Issue / PR。
+
+推荐流程：
+
+1. Fork 仓库并创建功能分支
+2. 提交改动并自测主要页面
+3. 发起 Pull Request，说明改动范围与影响
+
+## 安全建议
+
+- 不要在仓库中提交生产环境数据库密码
+- 建议后续改造为环境变量配置（如 `.env`）
+- 线上部署建议启用 HTTPS 与最小权限数据库账号
+
+## 路线图（建议）
+
+- 配置与密钥环境变量化
+- 页面文案与历史文件编码统一（UTF-8）
+- 增加后台管理与内容维护能力
+- 增加基础自动化测试
